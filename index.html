@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Suporte N1 — SIGMA/GLPI</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">
+      <h1>Dashboard — Suporte N1 SIGMA/GLPI</h1>
+      <p>Equipe: Lucas Vieira Areal · Cleidson de Jesus Silva</p>
+    </div>
+    <div class="header-actions">
+      <label class="upload-btn" for="csv-input">Carregar relatórios</label>
+      <input type="file" id="csv-input" accept=".csv" multiple style="display:none" onchange="loadCSVs(this)">
+    </div>
+  </div>
+
+  <!-- NOTIFICAÇÃO DE CARGA -->
+  <div class="notif-wrap" id="notif">
+    <span class="notif-texto" id="notif-texto"></span>
+    <button class="notif-fechar" onclick="fecharNotif()">Fechar</button>
+  </div>
+
+  <!-- ABAS PRINCIPAIS -->
+  <div class="tabs">
+    <div class="tab active" onclick="setTab('pendencias')">Pendências</div>
+    <div class="tab" onclick="setTab('atuados')">Chamados Atuados</div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros-bar" id="filtros-bar">
+    <span id="filtro-periodo-wrap" style="display:none;align-items:center;gap:8px">
+      <label>Mês:</label>
+      <select class="periodo-select" id="sel-mes" onchange="onMesChange()">
+        <option value="">Selecione o mês...</option>
+      </select>
+    </span>
+    <span id="filtro-semana-wrap" style="display:none;align-items:center;gap:8px">
+      <span class="sep">|</span>
+      <label>Semana:</label>
+      <select class="periodo-select" id="sel-semana" disabled onchange="render()">
+        <option value="">Selecione a semana...</option>
+      </select>
+    </span>
+    <span class="sep" id="sep-tecnico">|</span>
+    <label>Técnico:</label>
+    <div class="tecnico-group">
+      <button class="tecnico-btn t0 active" onclick="setTecnico('LUCAS VIEIRA AREAL',0)">Lucas Areal</button>
+      <button class="tecnico-btn t1" onclick="setTecnico('CLEIDSON DE JESUS SILVA',1)">Cleidson Silva</button>
+      <button class="tecnico-btn t2" onclick="setTecnico('EQUIPE',2)">Equipe N1</button>
+    </div>
+  </div>
+
+  <!-- SUBTABS (só visível em Chamados Atuados) -->
+  <div class="subtabs" id="subtabs" style="display:none">
+    <div class="subtab active" onclick="setSubtab('mensal')">Mensal</div>
+    <div class="subtab" onclick="setSubtab('semanal')">Semanal</div>
+  </div>
+
+  <!-- CONTEÚDO DINÂMICO -->
+  <div class="content" id="content">
+    <div class="vazio">
+      <h3>Carregue os relatórios para começar</h3>
+      <p>Clique em "Carregar relatórios" e selecione os CSVs exportados do GLPI (pode selecionar vários de uma vez).</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    VISAO — Dashboard de visualização e acompanhamento de chamados - SIGMA · Gerado em <span id="data-geracao"></span>
+  </div>
+  <div class="footer">
+    Criado por Lucas Vieira Areal
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
